@@ -65,11 +65,27 @@ const storeSchema = new mongoose.Schema({
   ],
 });
 
-storeSchema.virtual('menu',{
-  ref:'itemModel',
-  localField:'_id',
-  foreignField:'store_id',
-})
+storeSchema.methods.toJSON = function(){
+  const store = this
+  const storeObject = store.toObject();
+
+  delete storeObject.password
+  delete storeObject.tokens
+
+  return storeObject
+}
+
+storeSchema.virtual("menu", {
+  ref: "itemModel",
+  localField: "_id",
+  foreignField: "store_id",
+});
+
+storeSchema.virtual("reviews", {
+  ref: "reviewModel",
+  localField: "_id",
+  foreignField: "store_id",
+});
 
 storeSchema.methods.generateAuthToken = async function () {
   const store = this;

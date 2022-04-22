@@ -11,6 +11,7 @@ const itemSchema = new mongoose.Schema({
   item_type:{                 // Item Category:ex-"VEG/NON-Veg"
     type:String,
     required:true,
+    default:"Veg",
   },
   price: {                    // ItemPrice:ex-"Rs10.00"
     type: Number,

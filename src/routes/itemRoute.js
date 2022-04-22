@@ -19,6 +19,18 @@ itemRoute.post("/item/add", storeAuth, async (req, res) => {
   }
 });
 
+itemRoute.delete("/item/:id", storeAuth, async (req, res) => {
+  try {
+    const items = await item.findOneAndDelete({
+      _id: req.params.id,
+      store_id: req.store._id,
+    });
+    res.status(200).send(items);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
 itemRoute.get("/items", storeAuth, async (req, res) => {
   try {
     await req.store.populate("menu");

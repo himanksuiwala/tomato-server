@@ -28,7 +28,6 @@ userRoute.post("/user", async (req, res) => {
   });
 
   try {
-    console.log(user);
     res.status(201).send({ user, token });
   } catch (error) {
     res.status(401).send({
@@ -53,7 +52,7 @@ userRoute.post("/user/login", async (req, res) => {
     if (!comparePass || !checkforUser) {
       throw new Error();
     }
-    res.status(201).send({ msg: "Yes you can proceed !", checkforUser, token });
+    res.status(201).send({checkforUser, token });
   } catch (error) {
     res.status(400).send({ msg: "Please check your Username or Password" });
   }

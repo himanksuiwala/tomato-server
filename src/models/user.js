@@ -47,6 +47,12 @@ userSchema.methods.toJSON = function () {
   return userObject;
 };
 
+userSchema.virtual("myreview", {
+  ref: "reviewModel",
+  localField: "_id",
+  foreignField: "user_id",
+});
+
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
   const token = jwt.sign(

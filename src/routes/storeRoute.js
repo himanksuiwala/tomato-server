@@ -18,20 +18,20 @@ storeRoute.post("/store/login", async (req, res) => {
   const loginEmail = req.body.email;
   const loginPass = req.body.password;
 
-  const checkforUser = await store.findOne({ email: loginEmail });
+  const checkforStore = await store.findOne({ email: loginEmail });
 
-  const comparePass = await bcrypt.compare(loginPass, checkforUser.password);
-  const token = await jwt.sign({ _id: checkforUser._id.toString() }, "SECRET");
-  checkforUser.tokens = checkforUser.tokens.concat({
+  const comparePass = await bcrypt.compare(loginPass, checkforStore.password);
+  const token = await jwt.sign({ _id: checkforStore._id.toString() }, "SECRET");
+  checkforStore.tokens = checkforStore.tokens.concat({
     token,
   });
-  await checkforUser.save();
+  await checkforStore.save();
 
   try {
-    if (!comparePass || !checkforUser) {
+    if (!comparePass || !checkforStore) {
       throw new Error();
     }
-    res.status(201).send({ msg: "HURRAH!", checkforUser, token });
+    res.status(201).send({checkforStore, token });
   } catch (error) {
     res.status(401).send({ msg: error });
   }
@@ -41,11 +41,10 @@ storeRoute.post("/store", async (req, res) => {
   const storeEmail = req.body.email;
   // const checkforExisiting = await store.findOne({ email: storeEmail });
 
-  
   const store = new storeModel({
     ...req.body,
   });
-    // const checkforExisiting = await store.findOne({ email: req.body.email });
+  // const checkforExisiting = await store.findOne({ email: req.body.email });
 
   // if (checkforExisiting) {
   //   throw new Error("User Already exists!");
@@ -66,7 +65,6 @@ storeRoute.post("/store/logout", storeAuth, async (req, res) => {
       return token.token !== req.token;
     });
     await req.store.save();
-    console.log(req.store.tokens);
     res.status(200).send("Youve bee");
   } catch (error) {
     res.status(400).send({ msg: error });
