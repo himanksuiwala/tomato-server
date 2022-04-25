@@ -27,6 +27,13 @@ const userSchema = new mongoose.Schema({
       }
     },
   },
+  addresses:[
+    {
+      address:{
+        type:String,
+      }
+    }
+  ],
   tokens: [
     {
       token: {
