@@ -15,12 +15,11 @@ userRoute.get("/user/about", auth, async (req, res) => {
 });
 
 userRoute.put("/user/:id", auth, async (req, res) => {
-  const address = req.body.address;
-  const update = { ...req.body };
+  const updatedUser = { ...req.body };
 
   try {
-    await user.findOneAndUpdate({ _id: req.params.id }, update, { new: true });
-    res.status(200).send("a");
+    await user.findOneAndUpdate({ _id: req.params.id }, updatedUser, { new: true });
+    res.status(200).send({msg:"User Updated"});
   } catch (error) {
     res.status(400).send(error);
   }

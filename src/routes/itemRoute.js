@@ -31,6 +31,17 @@ itemRoute.delete("/item/:id", storeAuth, async (req, res) => {
   }
 });
 
+itemRoute.put("/item/:id", storeAuth, async (req, res) => {
+  const updatedItem = { ...req.body };
+
+  try {
+    await item.findOneAndUpdate({ _id: req.params.id }, updatedItem);
+    res.status(200).send("Item Updated");
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
 itemRoute.get("/items", storeAuth, async (req, res) => {
   try {
     await req.store.populate("menu");
