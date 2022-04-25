@@ -18,6 +18,10 @@ const reviewSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
+  created: {
+    type: Date,
+    default: new Date(),
+  },
 });
 
 module.exports = mongoose.model("reviewModel", reviewSchema);
