@@ -14,11 +14,26 @@ userRoute.get("/user/about", auth, async (req, res) => {
   }
 });
 
+userRoute.put("/user/:id", auth, async (req, res) => {
+  const address = req.body.address;
+  const update = { ...req.body };
+
+  try {
+    await user.findOneAndUpdate({ _id: req.params.id }, update, { new: true });
+    res.status(200).send("a");
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
 userRoute.post("/user", async (req, res) => {
   const user = new userModel({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
+    ...req.body,
+  });
+
+  const address = req.body.address;
+  user.addresses = user.addresses.concat({
+    address,
   });
 
   user.password = bcrypt.hashSync(user.password, 10);
@@ -52,7 +67,7 @@ userRoute.post("/user/login", async (req, res) => {
     if (!comparePass || !checkforUser) {
       throw new Error();
     }
-    res.status(201).send({checkforUser, token });
+    res.status(201).send({ checkforUser, token });
   } catch (error) {
     res.status(400).send({ msg: "Please check your Username or Password" });
   }
