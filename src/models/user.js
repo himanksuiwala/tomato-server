@@ -27,13 +27,18 @@ const userSchema = new mongoose.Schema({
       }
     },
   },
-  addresses:[
+  addresses: [
     {
-      address:{
-        type:String,
-      }
-    }
+      address: {
+        type: String,
+      },
+    },
   ],
+  created: {
+    type: Date,
+    default: new Date(),
+  },
+
   tokens: [
     {
       token: {

@@ -55,6 +55,11 @@ const storeSchema = new mongoose.Schema({
       }
     },
   },
+  created: {
+    type: Date,
+    default: new Date(),
+  },
+
   tokens: [
     {
       token: {
@@ -65,15 +70,15 @@ const storeSchema = new mongoose.Schema({
   ],
 });
 
-storeSchema.methods.toJSON = function(){
-  const store = this
+storeSchema.methods.toJSON = function () {
+  const store = this;
   const storeObject = store.toObject();
 
-  delete storeObject.password
-  delete storeObject.tokens
+  delete storeObject.password;
+  delete storeObject.tokens;
 
-  return storeObject
-}
+  return storeObject;
+};
 
 storeSchema.virtual("menu", {
   ref: "itemModel",
