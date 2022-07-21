@@ -42,12 +42,21 @@ itemRoute.put("/item/:id", storeAuth, async (req, res) => {
   }
 });
 
-itemRoute.get("/items", storeAuth, async (req, res) => {
+// itemRoute.get("/items", storeAuth, async (req, res) => {
+//   try {
+//     await req.store.populate("menu");
+//     res.status(200).send(req.store.menu);
+//   } catch (error) {
+//     res.status(400).send(error);
+//   }
+// });
+
+itemRoute.get("/storeMenu/:storeId", async (req, res) => {
   try {
-    await req.store.populate("menu");
-    res.status(200).send(req.store.menu);
+    const data = await item.find({ store_id: req.params.storeId });
+    res.status(200).send(data);
   } catch (error) {
-    res.status(400).send(error);
+    res.status(400).send(error.message);
   }
 });
 

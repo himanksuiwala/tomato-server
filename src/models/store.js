@@ -92,6 +92,13 @@ storeSchema.virtual("reviews", {
   foreignField: "store_id",
 });
 
+///////////////////
+storeSchema.virtual("mycartOrder", {
+  ref: "cartModel",
+  localField: "_id",
+  foreignField: "store_id",
+});
+
 storeSchema.methods.generateAuthToken = async function () {
   const store = this;
   const token = jwt.sign(

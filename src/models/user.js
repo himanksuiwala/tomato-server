@@ -58,12 +58,29 @@ userSchema.methods.toJSON = function () {
 
   return userObject;
 };
+userSchema.virtual("mycartOrder", {
+  ref: "cartModel",
+  localField: "_id",
+  foreignField: "user_id",
+});
+
+userSchema.virtual("myorders", {
+  ref: "OrderModel",
+  localField: "_id",
+  foreignField: "user_id",
+});
 
 userSchema.virtual("myreview", {
   ref: "reviewModel",
   localField: "_id",
   foreignField: "user_id",
 });
+
+// userSchema.virtual("myorder",{
+//   ref:"orderModel",
+//   localField:"_id",
+//   foreignField:"user_id",
+// })
 
 userSchema.methods.generateAuthToken = async function () {
   const user = this;

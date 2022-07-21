@@ -66,13 +66,13 @@ userRoute.post("/user/login", async (req, res) => {
     if (!comparePass || !checkforUser) {
       throw new Error();
     }
-    res.status(201).send({ checkforUser, token });
+    res.status(200).send({ checkforUser, token });
   } catch (error) {
     res.status(400).send({ msg: "Please check your Username or Password" });
   }
 });
 
-userRoute.post("/user/logout", auth, async (req, res) => {
+userRoute.get("/user/logout", auth, async (req, res) => {
   try {
     req.user.tokens = req.user.tokens.filter((token) => {
       return token.token !== req.token;
@@ -80,7 +80,7 @@ userRoute.post("/user/logout", auth, async (req, res) => {
     await req.user.save();
     res.send("You've been logout");
   } catch (e) {
-    rs.status(500).send();
+    rs.status(500).send(e.message);
   }
 });
 

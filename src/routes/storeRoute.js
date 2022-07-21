@@ -14,6 +14,24 @@ storeRoute.get("/store/about", storeAuth, async (req, res) => {
   }
 });
 
+storeRoute.get("/storedata/:id", async (req, res) => {
+  try {
+    const data = await store.findById(req.params.id)
+    res.status(200).send(data);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
+storeRoute.get("/store/getAll", async (req, res) => {
+  try {
+    const data = await store.find();
+    res.status(200).send(data);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
 storeRoute.post("/store/login", async (req, res) => {
   const loginEmail = req.body.email;
   const loginPass = req.body.password;
@@ -31,7 +49,7 @@ storeRoute.post("/store/login", async (req, res) => {
     if (!comparePass || !checkforStore) {
       throw new Error();
     }
-    res.status(201).send({checkforStore, token });
+    res.status(201).send({ checkforStore, token });
   } catch (error) {
     res.status(401).send({ msg: error });
   }
