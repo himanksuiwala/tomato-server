@@ -51,9 +51,11 @@ orderRoute.get("/cart", userAuth, async (req, res) => {
     await req.user.populate({
       path: "mycartOrder",
       populate: {
-        path: "items.item_id",
-        path:"store_id"
+        path: "items.item_id store_id",
       },
+      // populate: {
+      //   path:"store_id",
+      // },
     });
     res.status(200).send(req.user.mycartOrder);
   } catch (error) {
