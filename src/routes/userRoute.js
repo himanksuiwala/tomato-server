@@ -18,8 +18,10 @@ userRoute.put("/user/:id", auth, async (req, res) => {
   const updatedUser = { ...req.body };
 
   try {
-    await user.findOneAndUpdate({ _id: req.params.id }, updatedUser, { new: true });
-    res.status(200).send({msg:"User Updated"});
+    await user.findOneAndUpdate({ _id: req.params.id }, updatedUser, {
+      new: true,
+    });
+    res.status(200).send({ msg: "User Updated" });
   } catch (error) {
     res.status(400).send(error);
   }
@@ -56,6 +58,13 @@ userRoute.post("/user/login", async (req, res) => {
 
   const checkforUser = await user.findOne({ email: loginEmail });
   const comparePass = await bcrypt.compare(loginPass, checkforUser.password);
+
+  if (comparePass == null) {
+    res
+      .status(401)
+      .send({ msg: "Pleasasdase check your Username or Password" });
+  }
+
   const token = await jwt.sign({ _id: checkforUser._id.toString() }, "SECRET");
   checkforUser.tokens = checkforUser.tokens.concat({
     token,
@@ -66,9 +75,9 @@ userRoute.post("/user/login", async (req, res) => {
     if (!comparePass || !checkforUser) {
       throw new Error();
     }
-    res.status(200).send({ checkforUser, token });
+    res.status(200).send({ checkforUser, token, msg: typeof comparePass });
   } catch (error) {
-    res.status(400).send({ msg: "Please check your Username or Password" });
+    res.status(401).json({ msg: "Pleaase check your Username or Password" });
   }
 });
 
