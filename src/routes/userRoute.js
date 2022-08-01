@@ -57,14 +57,10 @@ userRoute.post("/user/login", async (req, res) => {
   const loginPass = req.body.password;
 
   const checkforUser = await user.findOne({ email: loginEmail });
-  const comparePass = await bcrypt.compare(loginPass, checkforUser.password);
-
-  if (comparePass == null) {
-    res
-      .status(401)
-      .send({ msg: "Pleasasdase check your Username or Password" });
+  if(!checkforUser){
+    res.status(401).json({ msg: "Please check your Username or Password" });
   }
-
+  const comparePass = await bcrypt.compare(loginPass, checkforUser.password);
   const token = await jwt.sign({ _id: checkforUser._id.toString() }, "SECRET");
   checkforUser.tokens = checkforUser.tokens.concat({
     token,
