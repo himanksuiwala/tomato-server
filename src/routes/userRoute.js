@@ -28,36 +28,60 @@ userRoute.put("/user/:id", auth, async (req, res) => {
 });
 
 userRoute.post("/user", async (req, res) => {
-  const user = new userModel({
+  const regUser = new userModel({
     ...req.body,
   });
 
-  const address = req.body.address;
-  user.addresses = user.addresses.concat({
-    address,
-  });
-
-  user.password = bcrypt.hashSync(user.password, 10);
-  const token = jwt.sign({ _id: user._id.toString() }, "SECRET");
-  user.tokens = user.tokens.concat({
-    token,
-  });
-
   try {
-    res.status(201).send({ user, token });
-  } catch (error) {
-    res.status(401).send({
-      msg: error,
+    const address = req.body.address;
+    regUser.address = regUser.addresses.concat({
+      address,
     });
+    regUser.password = bcrypt.hashSync(regUser.password, 10);
+    const token = jwt.sign({ _id: regUser._id.toString() }, "SECRET");
+    regUser.tokens = regUser.tokens.concat({
+      token,
+    });
+    await regUser.save();
+    res.status(201).send({ regUser, token });
+  } catch (error) {
+    res.status(401).send(error.message);
   }
+  // const checkforRegUser = user.findOne({ email: req.body.email });
 });
+
+// userRoute.post("/user", async (req, res) => {
+//   const user = new userModel({
+//     ...req.body,
+//   });
+//   const checkforUser = await user.findOne({ email: req.body.email });
+//   const address = req.body.address;
+
+//   user.addresses = user.addresses.concat({
+//     address,
+//   });
+
+//   user.password = bcrypt.hashSync(user.password, 10);
+//   const token = jwt.sign({ _id: user._id.toString() }, "SECRET");
+//   user.tokens = user.tokens.concat({
+//     token,
+//   });
+//   await user.save();
+//   try {
+//     res.status(201).send({ user, token });
+//   } catch (error) {
+//     res.status(401).send({
+//       msg: error,
+//     });
+//   }
+// });
 
 userRoute.post("/user/login", async (req, res) => {
   const loginEmail = req.body.email;
   const loginPass = req.body.password;
 
   const checkforUser = await user.findOne({ email: loginEmail });
-  if(!checkforUser){
+  if (!checkforUser) {
     res.status(401).json({ msg: "Please check your Username or Password" });
   }
   const comparePass = await bcrypt.compare(loginPass, checkforUser.password);
