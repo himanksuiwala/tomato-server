@@ -16,7 +16,7 @@ storeRoute.get("/store/about", storeAuth, async (req, res) => {
 
 storeRoute.get("/storedata/:id", async (req, res) => {
   try {
-    const data = await store.findById(req.params.id)
+    const data = await store.findById(req.params.id);
     res.status(200).send(data);
   } catch (error) {
     res.status(400).send(error.message);
@@ -37,7 +37,9 @@ storeRoute.post("/store/login", async (req, res) => {
   const loginPass = req.body.password;
 
   const checkforStore = await store.findOne({ email: loginEmail });
-
+  if (!checkforStore) {
+    res.status(401).json({ msg: "Please check your Username or Password" });
+  }
   const comparePass = await bcrypt.compare(loginPass, checkforStore.password);
   const token = await jwt.sign({ _id: checkforStore._id.toString() }, "SECRET");
   checkforStore.tokens = checkforStore.tokens.concat({
@@ -77,7 +79,7 @@ storeRoute.post("/store", async (req, res) => {
   }
 });
 
-storeRoute.post("/store/logout", storeAuth, async (req, res) => {
+storeRoute.get("/store/logout", storeAuth, async (req, res) => {
   try {
     req.store.tokens = req.store.tokens.filter((token) => {
       return token.token !== req.token;
@@ -85,7 +87,7 @@ storeRoute.post("/store/logout", storeAuth, async (req, res) => {
     await req.store.save();
     res.status(200).send("Youve bee");
   } catch (error) {
-    res.status(400).send({ msg: error });
+    res.status(400).send(error);
   }
 });
 

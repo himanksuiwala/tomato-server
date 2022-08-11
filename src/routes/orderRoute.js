@@ -4,6 +4,21 @@ const userAuth = require("../middleware/auth");
 const OrderModel = require("../models/Order");
 const cartOrder = require("../models/cartOrder");
 const item = require("../models/item");
+const storeAuth = require("../middleware/store_auth");
+
+orderRoute.get("/listStoreOrders", storeAuth, async (req, res) => {
+  try {
+    await req.store.populate({
+      path: "mycartOrder",
+      populate: {
+        path: "items.item_id",
+      },
+    });
+    res.status(200).send(req.store.mycartOrder);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
 
 orderRoute.post("/order", userAuth, async (req, res) => {
   const order = new OrderModel({
@@ -53,9 +68,6 @@ orderRoute.get("/cart", userAuth, async (req, res) => {
       populate: {
         path: "items.item_id store_id",
       },
-      // populate: {
-      //   path:"store_id",
-      // },
     });
     res.status(200).send(req.user.mycartOrder);
   } catch (error) {
