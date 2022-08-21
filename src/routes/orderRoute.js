@@ -6,12 +6,12 @@ const cartOrder = require("../models/cartOrder");
 const item = require("../models/item");
 const storeAuth = require("../middleware/store_auth");
 
-orderRoute.get("/listStoreOrders", storeAuth, async (req, res) => {
+orderRoute.get("/storeOrders", storeAuth, async (req, res) => {
   try {
     await req.store.populate({
       path: "mycartOrder",
       populate: {
-        path: "items.item_id",
+        path: "items.item_id user_id",
       },
     });
     res.status(200).send(req.store.mycartOrder);
