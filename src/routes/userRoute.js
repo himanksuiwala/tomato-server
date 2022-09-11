@@ -38,7 +38,10 @@ userRoute.post("/user", async (req, res) => {
       address,
     });
     regUser.password = bcrypt.hashSync(regUser.password, 10);
-    const token = jwt.sign({ _id: regUser._id.toString() }, "SECRET");
+    const token = jwt.sign(
+      { _id: regUser._id.toString() },
+      process.env.JWT_SALT
+    );
     regUser.tokens = regUser.tokens.concat({
       token,
     });
@@ -47,7 +50,6 @@ userRoute.post("/user", async (req, res) => {
   } catch (error) {
     res.status(401).send(error.message);
   }
-  // const checkforRegUser = user.findOne({ email: req.body.email });
 });
 
 // userRoute.post("/user", async (req, res) => {

@@ -41,7 +41,10 @@ storeRoute.post("/store/login", async (req, res) => {
     res.status(401).json({ msg: "Please check your Username or Password" });
   }
   const comparePass = await bcrypt.compare(loginPass, checkforStore.password);
-  const token = await jwt.sign({ _id: checkforStore._id.toString() }, "SECRET");
+  const token = await jwt.sign(
+    { _id: checkforStore._id.toString() },
+    process.env.JWT_SALT
+  );
   checkforStore.tokens = checkforStore.tokens.concat({
     token,
   });
@@ -59,16 +62,11 @@ storeRoute.post("/store/login", async (req, res) => {
 
 storeRoute.post("/store", async (req, res) => {
   const storeEmail = req.body.email;
-  // const checkforExisiting = await store.findOne({ email: storeEmail });
 
   const store = new storeModel({
     ...req.body,
   });
-  // const checkforExisiting = await store.findOne({ email: req.body.email });
 
-  // if (checkforExisiting) {
-  //   throw new Error("User Already exists!");
-  // }
   store.password = bcrypt.hashSync(store.password, 10);
   const token = await store.generateAuthToken();
 

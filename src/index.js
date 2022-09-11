@@ -6,10 +6,6 @@ const item = require("./routes/itemRoute");
 const order = require("./routes/orderRoute");
 const review = require("./routes/reviewRoute");
 const conn = require("./db/db_config");
-// const corsOptions = require("./corsConfig");
-// const corsOptions = require('./config/corsOption')
-// const credentials = require('./middleware/credentials')
-
 const allowed = [
   "http://localhost:3000/",
   "http://localhost:3001/",
@@ -17,11 +13,10 @@ const allowed = [
   "https://www.google.com/",
 ];
 
-
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: ["https://tomato-lac.vercel.app/", "http://localhost:3000"],
     credentials: true,
     methods: ["GET,HEAD,PUT,PATCH,POST,DELETE"],
   })
