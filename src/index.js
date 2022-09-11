@@ -16,7 +16,7 @@ const allowed = [
 const app = express();
 app.use(
   cors({
-    origin: ["https://tomato-lac.vercel.app/"],
+    origin: "https://tomato-lac.vercel.app/",
     credentials: true,
     methods: ["GET,HEAD,PUT,PATCH,POST,DELETE"],
   })
