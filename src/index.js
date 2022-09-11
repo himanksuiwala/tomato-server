@@ -16,7 +16,7 @@ const allowed = [
 const app = express();
 app.use(
   cors({
-    origin: "https://tomato-lac.vercel.app/",
+    origin: "http://localhost:3000",
     credentials: true,
     methods: ["GET,HEAD,PUT,PATCH,POST,DELETE"],
   })
@@ -29,7 +29,7 @@ app.use(user);
 app.use(item);
 app.use(review);
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 conn.on("open", () => {
   console.log("Connection Established with DB");
