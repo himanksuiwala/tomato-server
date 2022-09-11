@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const URI = process.env.MONGO_URI;
+const URI = "mongodb+srv://himank:stepbystep@cluster0.hfux0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
 mongoose.connect(URI);
 
