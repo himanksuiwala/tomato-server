@@ -38,10 +38,7 @@ userRoute.post("/user", async (req, res) => {
       address,
     });
     regUser.password = bcrypt.hashSync(regUser.password, 10);
-    const token = jwt.sign(
-      { _id: regUser._id.toString() },
-      process.env.JWT_SALT
-    );
+    const token = jwt.sign({ _id: regUser._id.toString() }, "SECRET");
     regUser.tokens = regUser.tokens.concat({
       token,
     });
