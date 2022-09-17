@@ -41,10 +41,7 @@ storeRoute.post("/store/login", async (req, res) => {
     res.status(401).json({ msg: "Please check your Username or Password" });
   }
   const comparePass = await bcrypt.compare(loginPass, checkforStore.password);
-  const token = await jwt.sign(
-    { _id: checkforStore._id.toString() },
-    process.env.JWT_SALT
-  );
+  const token = await jwt.sign({ _id: checkforStore._id.toString() }, "SECRET");
   checkforStore.tokens = checkforStore.tokens.concat({
     token,
   });
@@ -67,13 +64,12 @@ storeRoute.post("/store", async (req, res) => {
     ...req.body,
   });
 
-  store.password = bcrypt.hashSync(store.password, 10);
-  const token = await store.generateAuthToken();
-
   try {
+    store.password = bcrypt.hashSync(store.password, 10);
+    const token = await store.generateAuthToken();
     res.status(201).send({ store, token });
   } catch (error) {
-    res.status(401).send({ msg: error });
+    res.status(401).send(error.message);
   }
 });
 
