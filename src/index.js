@@ -16,8 +16,9 @@ const allowed = [
 const app = express();
 app.use(
   cors({
-    origin: "asxd.com",
+    origin: "https://tomato-himanksuiwala-gmailcom.vercel.app/",
     credentials: true,
+    allowedHeaders: ['Content-Type'],
     methods: ["GET,HEAD,PUT,PATCH,POST,DELETE"],
   })
 );
