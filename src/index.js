@@ -18,7 +18,6 @@ app.use(
   cors({
     origin: "https://tomato-lac.vercel.app",
     credentials: true,
-    allowedHeaders: ['Content-Type'],
     methods: ["GET,HEAD,PUT,PATCH,POST,DELETE"],
   })
 );
