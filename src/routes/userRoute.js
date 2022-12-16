@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const userModel = require("../models/user");
 const user = require("../models/user");
 const auth = require("../middleware/auth");
-
+require('dotenv').config()
 userRoute.get("/user/about", auth, async (req, res) => {
   try {
     res.status(202).send(req.user);
@@ -36,9 +36,9 @@ userRoute.post("/user", async (req, res) => {
     const address = req.body.address;
     regUser.address = regUser.addresses.concat({
       address,
-    })
+    });
     regUser.password = bcrypt.hashSync(regUser.password, 10);
-    const token = jwt.sign({ _id: regUser._id.toString() }, "SECRET");
+    const token = jwt.sign({ _id: regUser._id.toString() }, process.env.SECRET);
     regUser.tokens = regUser.tokens.concat({
       token,
     });

@@ -1,18 +1,18 @@
 const jwt = require("jsonwebtoken");
 const Store = require("../models/store");
+require("dotenv").config();
 
 const storeAuth = async (req, res, next) => {
   try {
     const token = req.header("Authorization").replace("Bearer ", "");
-    const decoded = jwt.verify(token, "SECRET");
+    const decoded = jwt.verify(token, process.env.SECRET);
     const store = await Store.findOne({
       _id: decoded._id,
       "tokens.token": token,
     });
 
     if (!store) {
-        
-      console.log(store)
+      console.log(store);
       throw new Error();
     }
 

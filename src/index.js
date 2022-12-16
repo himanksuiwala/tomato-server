@@ -6,13 +6,13 @@ const item = require("./routes/itemRoute");
 const order = require("./routes/orderRoute");
 const review = require("./routes/reviewRoute");
 const conn = require("./db/db_config");
+require("dotenv").config();
 const allowed = [
   "http://localhost:3000/",
   "http://localhost:3001/",
   "http://localhost:3000/login",
   "https://www.google.com/",
 ];
-
 const app = express();
 app.use(
   cors({

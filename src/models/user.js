@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
-// const { validate } = require("");
+require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const userSchema = new mongoose.Schema({
   name: {
@@ -88,7 +88,7 @@ userSchema.methods.generateAuthToken = async function () {
     {
       _id: user._id.toString(),
     },
-    "SECRET"
+    process.env.SECRET
   );
 
   user.tokens = user.tokens.concat({

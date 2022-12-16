@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const storeModel = require("../models/store");
 const storeAuth = require("../middleware/store_auth");
 const store = require("../models/store");
-
+require('dotenv').config()
 storeRoute.get("/store/about", storeAuth, async (req, res) => {
   try {
     res.status(200).send(req.store);
@@ -41,7 +41,7 @@ storeRoute.post("/store/login", async (req, res) => {
     res.status(401).json({ msg: "Please check your Username or Password" });
   }
   const comparePass = await bcrypt.compare(loginPass, checkforStore.password);
-  const token = await jwt.sign({ _id: checkforStore._id.toString() }, "SECRET");
+  const token = await jwt.sign({ _id: checkforStore._id.toString() }, process.env.SECRET);
   checkforStore.tokens = checkforStore.tokens.concat({
     token,
   });

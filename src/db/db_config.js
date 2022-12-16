@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
+require("dotenv").config();
 
-const URI = "mongodb+srv://himank:stepbystep@cluster0.hfux0.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-
-mongoose.connect(URI);
+mongoose.connect(process.env.URI);
 
 const conn = mongoose.connection;
 

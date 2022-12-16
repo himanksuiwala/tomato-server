@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const jwt = require("jsonwebtoken");
-
+require('dotenv').config()
 const storeSchema = new mongoose.Schema({
   store_name: {
     type: String,
@@ -105,7 +105,7 @@ storeSchema.methods.generateAuthToken = async function () {
     {
       _id: store._id.toString(),
     },
-    "SECRET"
+    process.env.SECRET
   );
 
   store.tokens = store.tokens.concat({
